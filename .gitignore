@@ -1,0 +1,108 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Maven
+target/
+
+# Logs
+*.log
+logs/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node/Angular
+node_modules/
+dist/
+
+# Angular build and cache folders
+frontend/.angular/
+frontend/dist/
+
+# Node modules and lock files
+frontend/node_modules/
+package-lock.json
+frontend/package-lock.json
+
+# Additional IDE/editor folders
+*.iml
+out/
+
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+logs/
+backend/logs/
+document-chat.log
+
+# Build artifacts
+build/
+dist/
+backend/build/
+backend/target/
+
+# Coverage
+coverage/
+frontend/coverage/
+backend/coverage/
+
+# Misc
+*.swp
+*.swo
+*.bak
+*.tmp
+*.pid
+*~
+*.orig
+*.rej
+*.patch
+
+# Environment
+.env
+.env.*
+
+# Others
+*.swp
+*.swo
+
+# Backend generated
+backend/logs/
+backend/target/
+backend/build/
+
+# Frontend generated
+frontend/node_modules/
+frontend/dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Misc
+*.tmp
+*.bak
+
+# PDF/Uploads (if any)
+*.pdf
+!InterviewGuideAtGoogle.pdf

@@ -1,0 +1,114 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <h1>📚 Document Chat Assistant</h1>
+    <p>Upload your documents and chat with an AI that answers only from your uploaded content</p>
+  </div>
+
+  <!-- Status Message -->
+  <div *ngIf="statusMessage" class="status-message" [ngClass]="'status-' + statusType">
+    {{ statusMessage }}
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Document Upload Section -->
+    <div class="upload-section">
+      <h2>📁 Upload Documents</h2>
+      
+      <div class="file-upload" 
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event)"
+           (click)="fileInput.click()">
+        <div class="upload-icon">📤</div>
+        <div class="upload-text">
+          Drag and drop files here or click to browse
+        </div>
+        <div class="upload-text" style="font-size: 0.9rem; color: #a0aec0; margin-top: 8px;">
+          <strong>Supported formats:</strong> PDF, DOCX, TXT
+        </div>
+        <div class="upload-text" style="font-size: 0.8rem; color: #718096; margin-top: 4px;">
+          Maximum file size: 10MB
+        </div>
+        <input #fileInput type="file" 
+               (change)="onFileSelected($event)"
+               accept=".pdf,.docx,.txt"
+               style="display: none;">
+        <button class="upload-button">Choose Files</button>
+      </div>
+
+      <!-- Document List -->
+      <div class="document-list" *ngIf="documents.length > 0">
+        <h3 style="margin-bottom: 15px; color: #4a5568;">
+          📄 Uploaded Documents ({{ documents.length }})
+        </h3>
+        <div *ngFor="let doc of documents" class="document-item">
+          <div class="document-icon">
+            <span *ngIf="doc.fileType.includes('pdf')">📄</span>
+            <span *ngIf="doc.fileType.includes('word') || doc.fileType.includes('document')">📝</span>
+            <span *ngIf="doc.fileType.includes('text')">📃</span>
+            <span *ngIf="!doc.fileType.includes('pdf') && !doc.fileType.includes('word') && !doc.fileType.includes('document') && !doc.fileType.includes('text')">📄</span>
+          </div>
+          <div class="document-info">
+            <div class="document-name">{{ doc.fileName }}</div>
+            <div class="document-meta">
+              <span class="file-type">{{ getFileTypeDisplay(doc.fileType) }}</span>
+              <span class="file-size">{{ formatFileSize(doc.fileSize) }}</span>
+              <span class="upload-time">{{ formatDate(doc.uploadTime) }}</span>
+            </div>
+            <div class="document-status">
+              <span class="status-badge success">✅ Processed</span>
+            </div>
+          </div>
+          <button class="delete-button" (click)="deleteDocument(doc.id)" title="Delete document">
+            🗑️
+          </button>
+        </div>
+      </div>
+      
+      <!-- No Documents Message -->
+      <div class="no-documents" *ngIf="documents.length === 0">
+        <div class="no-documents-icon">📁</div>
+        <div class="no-documents-text">No documents uploaded yet</div>
+        <div class="no-documents-subtext">Upload a PDF, DOCX, or TXT file to get started</div>
+      </div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="chat-section">
+      <h2>💬 Chat with AI</h2>
+      
+      <div class="chat-messages">
+        <div *ngIf="messages.length === 0" style="text-align: center; color: #718096; padding: 20px;">
+          <div style="font-size: 3rem; margin-bottom: 15px;">🤖</div>
+          <div>Start a conversation by asking a question about your uploaded documents!</div>
+        </div>
+        
+        <div *ngFor="let message of messages" class="message" [ngClass]="getMessageClass(message.source)">
+          <div *ngIf="message.message">{{ message.message }}</div>
+          <div *ngIf="message.response">{{ message.response }}</div>
+          <div class="message-source">{{ getSourceText(message.source) }}</div>
+        </div>
+        
+        <div *ngIf="isLoading" class="message assistant">
+          <div class="loading"></div>
+          <div style="margin-left: 10px; display: inline-block;">AI is thinking...</div>
+        </div>
+      </div>
+
+      <div class="chat-input">
+        <input type="text" 
+               [(ngModel)]="newMessage"
+               (keyup.enter)="sendMessage()"
+               placeholder="Ask a question about your documents..."
+               [disabled]="isLoading">
+        <button class="send-button" 
+                (click)="sendMessage()"
+                [disabled]="!newMessage.trim() || isLoading">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
