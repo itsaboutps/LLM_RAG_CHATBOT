@@ -1,5 +1,6 @@
 package com.example.documentchat.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Document {
     private LocalDateTime uploadTime;
     
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<DocumentChunk> chunks;
     
     // Constructors

@@ -1,5 +1,6 @@
 package com.example.documentchat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Arrays;
 
@@ -12,6 +13,7 @@ public class DocumentChunk {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", nullable = false)
+    @JsonIgnore
     private Document document;
     
     @Column(columnDefinition = "TEXT")
