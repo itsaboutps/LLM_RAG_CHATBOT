@@ -456,10 +456,27 @@ public class ChatService {
     }
     
     private boolean isInterviewCountQuestion(String lowerQuery) {
-        // Check for various patterns that ask about interview count
+        // Check for specific patterns that ask about interview count
         String[] countWords = {"how many", "number of", "total", "count", "amount"};
         String[] interviewWords = {"interview", "round", "rounds", "session", "meeting"};
         String[] actionWords = {"give", "have", "take", "attend", "participate", "go through"};
+        
+        // First, check if this is about data structures, algorithms, or other technical topics
+        boolean isTechnicalQuestion = lowerQuery.contains("data structure") || 
+                                    lowerQuery.contains("algorithm") || 
+                                    lowerQuery.contains("programming") ||
+                                    lowerQuery.contains("coding") ||
+                                    lowerQuery.contains("study") ||
+                                    lowerQuery.contains("learn") ||
+                                    lowerQuery.contains("know") ||
+                                    lowerQuery.contains("structure") ||
+                                    lowerQuery.contains("topic") ||
+                                    lowerQuery.contains("subject") ||
+                                    lowerQuery.contains("concept");
+        
+        if (isTechnicalQuestion) {
+            return false; // Don't treat technical questions as interview count questions
+        }
         
         boolean hasCountWord = false;
         boolean hasInterviewWord = false;
@@ -490,9 +507,9 @@ public class ChatService {
         }
         
         // It's an interview count question if:
-        // 1. Has count word + interview word
-        // 2. Has interview word + action word (like "how many interviews do I have to give")
-        // 3. Just "how many" with interview context
+        // 1. Has count word + interview word (e.g., "how many interviews")
+        // 2. Has interview word + action word (e.g., "interviews do I have to give")
+        // 3. Just "how many" with interview context (e.g., "how many rounds")
         return (hasCountWord && hasInterviewWord) || 
                (hasInterviewWord && hasActionWord) ||
                (lowerQuery.contains("how many") && (hasInterviewWord || hasActionWord));
